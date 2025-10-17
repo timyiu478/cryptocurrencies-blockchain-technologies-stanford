@@ -1,6 +1,6 @@
 ## Merkle Proof Generation High Level Idea
 
-todo
+![](assets/idea.png)
 
 ## Example Runs
 
