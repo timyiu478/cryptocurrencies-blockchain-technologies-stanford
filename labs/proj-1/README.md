@@ -1,3 +1,5 @@
+# A Merkle Proof
+
 ## Merkle Proof Generation High Level Idea
 
 ![](assets/idea.png)
