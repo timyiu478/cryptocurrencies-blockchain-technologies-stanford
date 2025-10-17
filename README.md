@@ -4,7 +4,8 @@ The course covers technical aspects of blockchains technologies, including distr
 
 ## Labs
 
-| - | - | - | - |
+
 | # | Title | Description | Tags |
+| - | - | - | - |
 | 1 | A Merkle Proof | - | `Merkle Tree`, `Proof` |
 | 2| Bitcoin Transactions | - | `python-bitcoinlib` |
