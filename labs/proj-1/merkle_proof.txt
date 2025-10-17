@@ -1,0 +1,13 @@
+leaf position: 777
+leaf value: "data item 777"
+Hash values in proof:
+  Km9hrDPIcFEJFTCzkw8ewCvguGc6O1qLknEewCx46U4=
+  v0iDMv1YCH/ApAXUTVNqqn/GOBIY5v01UzPfVoB3asI=
+  kgnRjrgSyS1XdQqRutyVqzCBds7ypYcwpayF5coKz7c=
+  mLk6Y/NwPQr2h/5Zm1lrh1Zoai2DcUPh//Jv1F5yFvE=
+  ZBiIhCKvfXHXZV+w4TfaGbeR69BWnMw3Mn9qcJFodL8=
+  C/0X44F0iRCvK52ajGIYcfMrxU07DWp7HliBpa78uoQ=
+  bo26TOfUypAC4wfFaZXaXqmcI9odlF65OUhkqzx4U3s=
+  Skqt6cw5lCkv50f6vkakvqeQz6s+1yLzndm6VovqIG4=
+  pOg2pi4NcmfvXUMy1j9nCgFgG0tP6Y8XQhLy5Lab2UQ=
+  twyFI3AqQo8V1ieqq8JEOHlihMEd4RDHelIGVlW2CTg=
