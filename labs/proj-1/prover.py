@@ -59,6 +59,9 @@ def gen_merkle_proof(leaves, pos):
         #######  YOUR CODE GOES HERE                              ######
         #######     to hash internal nodes in the tree use the    ######
         #######     function hash_internal_node(left,right)       ######
+        # idea
+        # 1. build a binary from leaf
+        # 2. use binary search to find the needed hashes
 
     # Returns list of hashes that make up the Merkle Proof
     return hashes
