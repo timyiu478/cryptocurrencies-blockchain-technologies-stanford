@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{graphicx,fancyhdr,amsmath,amssymb,amsthm,subfig,url,hyperref}
+\usepackage[margin=1in]{geometry}
+
+%----------------------- Macros and Definitions --------------------------
+
+%%% FILL THIS OUT
+\newcommand{\studentname}{Tim Yiu}
+\newcommand{\exerciseset}{Homework 1}
+%%% END
+
+
+
+\renewcommand{\theenumi}{\bf \Alph{enumi}}
+
+%\theoremstyle{plain}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+
+\fancypagestyle{plain}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO,LE]{\sffamily\bfseries\large Stanford University}
+\fancyhead[LO,RE]{\sffamily\bfseries\large CS251: Cryptocurrencies and Blockchain Technologies}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\graphicspath{{figures/}}
+
+%-------------------------------- Title ----------------------------------
+
+\title{CS251: Cryptocurrencies and Blockchain Technologies \exerciseset}
+
+%--------------------------------- Text ----------------------------------
+
+\begin{document}
+\maketitle 
+
+
+\textbf{Problem 1. A broken proof of work hash function.}
+
+\vspace{12pt}
+ 
+The attacker can pre-calculate a $H(z) = SHA256(z)$ where $z \in Z = \{0,1\}^m$ such that $H(z) < 2^n / D$.
+
+\par
+
+Once $x$ is revealed, the attacker can compute $y = z \oplus x$.
+
+\vspace{12pt}
+
+\textbf{Problem 2. Beyond binary Merkle trees.}
+
+\vspace{12pt}
+
+a. Alice provides $H10 = H(T1 || T2 || T3), T5, T6, H12 = H(T7||T8||T9)$ to Bob. 
+Then Bob will check $root == H(T10 || H(T4||T5||T6) || H12)$
+
+\vspace{6pt}
+
+b. $(k-1) log_k(n) = (k-1) \frac{log_2(n)}{log_2(k)}$. We need $k-1$ elements per tree level, excluding the root.
+
+\vspace{6pt}
+
+c. better to use a binary tree. Because $\frac{(3-1)}{log_2(3)}log_2(n) > log_2(n)$
+
+\vspace{12pt}
+
+\textbf{Problem 3. Bitcoin script.}
+
+\vspace{6pt}
+
+a. <password>
+
+\vspace{6pt}
+
+b. The attacker can execute a brute-force attack on the publicly known hash on the blockchain.
+
+\vspace{6pt}
+
+c. This is not safe. Because when she tries to redeem her bitcoins, her password will be known by all participants, then the attacker can ignore the broadcasted transaction (if the attacker can control the network, it can make other nodes can't receive this transaction) and create a new valid transaction (since it knows the password now) to redeem Alice's bitcoins.
+
+\vspace{12pt}
+
+\textbf{Problem 4. BitcoinLotto.}
+
+\vspace{12pt}
+
+\textbf{Problem 5. Lightweight clients.}
+
+\vspace{12pt}
+
+
+
+\end{document}
