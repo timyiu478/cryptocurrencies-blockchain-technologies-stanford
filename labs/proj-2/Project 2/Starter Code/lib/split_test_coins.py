@@ -14,8 +14,6 @@ from config import (my_private_key, my_public_key, my_address,
 
 from utils import create_txin, create_txout, broadcast_transaction
 
-
-
 def split_coins(amount_to_send, txid_to_spend, utxo_index, n, network):
     txin_scriptPubKey = address.to_scriptPubKey()
     txin = create_txin(txid_to_spend, utxo_index)
@@ -37,15 +35,14 @@ if __name__ == '__main__':
 
     ######################################################################
     # TODO: set these parameters correctly
-    private_key = None
+    private_key = my_private_key
     public_key = private_key.pub
     address = P2PKHBitcoinAddress.from_pubkey(public_key)
 
-    amount_to_send = None # amount of BTC in the output you're splitting minus fee
-    txid_to_spend = (
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-    utxo_index = None # index of the output you are spending, indices start at 0
-    n = None # number of outputs to split the input into
+    amount_to_send =  0.0013 # amount of BTC in the output you're splitting minus fee
+    txid_to_spend = ('29e54d65071e2c08002700b591ea050ffd3105b7d173a97f1a32e5b7f0eebda7')
+    utxo_index = 1 # index of the output you are spending, indices start at 0
+    n = 8 # number of outputs to split the input into
     # For n, choose a number larger than what you immediately need, 
     # in case you make mistakes.
     ######################################################################
