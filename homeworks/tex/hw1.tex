@@ -85,9 +85,31 @@ c. This is not safe. Because when she tries to redeem her bitcoins, her password
 
 \textbf{Problem 4. BitcoinLotto.}
 
+\vspace{6pt}
+
+a. Approach 1: We can use a 2-out-of-2 multisig for this. One of the signature is owned by the lottery administrators. The administrators have promised to disclose this private key to public at the end of the week. So, the lottery winner can only claim the jackpot after such private key is revealed. Approach 2: We can use a locktime for this. We can simply add the following opcodes at the beginning of the redeem script to make sure the lottery winner can only claim the jackpot after 1 week from the lottery start time. 
+
+\begin{verbatim}
+<1 week from start of lottery>
+OP_CHECKLOCKTIMEVERIFY
+\end{verbatim}
+
+\vspace{6pt}
+
+b. Assume that the lottery system runs for $N$ weeks. The lottery administrators will first compute the winner $sk_i$ for each week $i \in \{1, 2, ..., N\}$. Then the lottery administrators can set the jackpot redemption script of the week $i$ as a pay-to-1-of-${N -i}$-multisigs script where the public keys are $pk_i, pk_{i+1}, ..., pk_{N}$. So, if the jackpot of the week $i$ was not claimed by signature $sig_i$ where $sig_i$ is constructed by $sk_i$, this jackpot can be claimed by $sig_{i+1}, sig_{i+2}, ..., sig_{i+N}$.
+
+
 \vspace{12pt}
 
 \textbf{Problem 5. Lightweight clients.}
+
+\vspace{6pt}
+
+a. Assume the current block header Bob stores is block $n$ and the block header that contains the merkle root of the Alice transaction is $n-i$ where $0 \le i < n$. Then Alice needs to give block headers $n-1, n-2, ..., n-i$ to Bob. Bob will use the hash pointer of block header $n$ recursively to verify block header $n-i$ is trustworthy. Alice also gave the Merkle proof for claiming her payment transaction to Bob, where this Merkle proof can be verified by the Merkle root of the block header $n-i$. 
+
+\vspace{6pt}
+
+b. this proof will require $k \cdot \text{block header bytes } + log(2, n) \cdot \text{hash of transaction bytes}$.
 
 \vspace{12pt}
 
