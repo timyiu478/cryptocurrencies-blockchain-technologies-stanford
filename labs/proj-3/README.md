@@ -4,7 +4,7 @@ We want to create a decentralized system to track debit and credit - a blockchai
 
 Alice, Bob and Carol are all friends who like to go out to eat together. Bob paid for lunch last time he and Alice went out to eat, so Alice owes Bob $10. Similarly, Carol paid when she and Bob went out to eat, and so Bob owes Carol $10.
 
-Now, imagine Carol runs short on cash, and borrows $10 from Alice. Notice that at this point, instead of each person paying back their ‘loan’ at some point, they could just all agree that nobody owes anyone. In other words, whenever there is a cycle of debt, we can just remove it from our bookkeeping, making everything simpler and reducing the number of times cash needs to change hands.
+Now, imagine Carol runs short on cash, and borrows $10 from Alice. Notice that at this point, instead of each person paying back their ‘loan’ at some point, they could just all agree that nobody owes anyone. In other words, whenever there is **a cycle of debt**, we can just **remove** it from our bookkeeping, making everything simpler and reducing the number of times cash needs to change hands.
 
 We will build a decentralized way to track who owes what to who, so that no trusted third party has to be relied upon. It will be efficient: it won’t cost an exorbitant amount of gas to store this data. No value will get transferred ’on the blockchain’ using this app; the only ether involved will be for gas.
 
