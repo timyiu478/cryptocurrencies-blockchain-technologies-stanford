@@ -9,12 +9,60 @@ var GENESIS = '0x000000000000000000000000000000000000000000000000000000000000000
 
 // This is the ABI for your contract (get it from Remix, in the 'Compile' tab)
 // ============================================================
-var abi = []; // FIXME: fill this in with your contract's ABI //Be sure to only have one array, not two
+var abi = [
+  {
+    "type": "function",
+    "name": "add_IOU",
+    "inputs": [
+      {
+        "name": "creditor",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint32",
+        "internalType": "uint32"
+      },
+      {
+        "name": "path",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "lookup",
+    "inputs": [
+      {
+        "name": "debtor",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "creditor",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "ret",
+        "type": "uint32",
+        "internalType": "uint32"
+      }
+    ],
+    "stateMutability": "view"
+  }
+]; // FIXME: fill this in with your contract's ABI //Be sure to only have one array, not two
 // ============================================================
 abiDecoder.addABI(abi);
 // call abiDecoder.decodeMethod to use this - see 'getAllFunctionCalls' for more
 
-var contractAddress = ""; // FIXME: fill this in with your contract's address/hash
+var contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // FIXME: fill this in with your contract's address/hash
 
 var BlockchainSplitwise = new ethers.Contract(contractAddress, abi, provider.getSigner());
 
@@ -23,30 +71,76 @@ var BlockchainSplitwise = new ethers.Contract(contractAddress, abi, provider.get
 // =============================================================================
 
 // TODO: Add any helper functions here!
+async function getCallData(extractor_fn) {
+	const results = new Set();
+	const all_calls = await getAllFunctionCalls(contractAddress, "add_IOU");
+	for (var i = 0; i < all_calls.length; i++) {
+		const extracted_values = extractor_fn(all_calls[i]);
+		for (var j = 0; j < extracted_values.length; j++) {
+			results.add(extracted_values[j]);
+		}
+	}
+	return Array.from(results);
+}
+
+async function getAllCreditors() {
+  return await getCallData((call) => { return [call.args[0]] });
+}
+
+async function getCreditors(user) {
+  const creditors = await getAllCreditors();
+  const creditorsForUser = [];
+  for (var i = 0; i < creditors.length; i++) {
+    const amount = await BlockchainSplitwise.lookup(user, creditors[i]);
+    if (amount > 0) {
+      creditorsForUser.push(creditors[i]);
+    }
+  }
+  return creditorsForUser;
+}
 
 // TODO: Return a list of all users (creditors or debtors) in the system
 // All users in the system are everyone who has ever sent or received an IOU
 async function getUsers() {
-
+  return await getCallData((call) => { return [call.from, call.args[0]] });
 }
 
 // TODO: Get the total amount owed by the user specified by 'user'
 async function getTotalOwed(user) {
-
+  const creditors = await getCreditors(user);
+  var totalAmount = 0;
+  for (var i = 0; i < creditors.length; i++) {
+    totalAmount += await BlockchainSplitwise.lookup(user, creditors[i]);
+  }
+  return totalAmount;
 }
 
 // TODO: Get the last time this user has sent or received an IOU, in seconds since Jan. 1, 1970
 // Return null if you can't find any activity for the user.
 // HINT: Try looking at the way 'getAllFunctionCalls' is written. You can modify it if you'd like.
 async function getLastActive(user) {
-	
+  user = user.toLowerCase();
+  const timestamps = await getCallData((call) => {
+		 if (call.from.toLowerCase() == user || call.args[0]?.toLowerCase() == user) {
+			return [call.t];
+		 }
+     return []; 
+	});
+  if (timestamps.length > 0) { return new Date(Math.max(...timestamps)); }
+  return null;
 }
 
 // TODO: add an IOU ('I owe you') to the system
 // The person you owe money is passed as 'creditor'
 // The amount you owe them is passed as 'amount'
 async function add_IOU(creditor, amount) {
-	
+  const debtor = defaultAccount;
+  const path = await doBFS(creditor, debtor, getCreditors);
+  if (path != null) {
+	  await BlockchainSplitwise.add_IOU(creditor, amount, path);
+  } else {
+	  await BlockchainSplitwise.add_IOU(creditor, amount, []);
+  }
 }
 
 // =============================================================================
@@ -158,6 +252,7 @@ getUsers().then((response)=>{
 // It passes the values from the two inputs above
 $("#addiou").click(function() {
 	defaultAccount = $("#myaccount").val(); //sets the default account
+  BlockchainSplitwise = new ethers.Contract(contractAddress, abi, provider.getSigner(defaultAccount.toString())); // switch signer
   add_IOU($("#creditor").val(), $("#amount").val()).then((response)=>{
 		window.location.reload(false); // refreshes the page after add_IOU returns and the promise is unwrapped
 	})
