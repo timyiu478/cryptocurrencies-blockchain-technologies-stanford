@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage{graphicx,fancyhdr,amsmath,amssymb,amsthm,subfig,url,hyperref}
+\usepackage[margin=1in]{geometry}
+
+%----------------------- Macros and Definitions --------------------------
+
+%%% FILL THIS OUT
+\newcommand{\studentname}{Tim Yiu}
+\newcommand{\exerciseset}{Homework 2}
+%%% END
+
+
+
+\renewcommand{\theenumi}{\bf \Alph{enumi}}
+
+%\theoremstyle{plain}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+
+\fancypagestyle{plain}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO,LE]{\sffamily\bfseries\large Stanford University}
+\fancyhead[LO,RE]{\sffamily\bfseries\large CS251: Cryptocurrencies and Blockchain Technologies}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\graphicspath{{figures/}}
+
+%-------------------------------- Title ----------------------------------
+
+\title{CS251: Cryptocurrencies and Blockchain Technologies \exerciseset}
+
+%--------------------------------- Text ----------------------------------
+
+\begin{document}
+\maketitle 
+
+
+\textbf{Problem 1.}
+
+\vspace{12pt}
+ 
+a. Once a block containing a double-spending transaction is submitted to the network, miners run implementation B will ignore such block since it is invalid and continue to mine a valid block and extend it to the valid block. The miners run implementation A will accept this block and the other blocks proposed by implementation B. From the miners run implementation A viewpoint, this will introduce a fork where there is a chain $C$ that has 0 double-spending transaction and was mined by the miners run implementation B. Since 20\% of minning runs the non-buggy one and 80\% of the mining power runs the buggy implementation, the chain $C$ \textbf{will not become the longest-chain} in long run from the mining run buggy implementation point of view.
+
+\vspace{12pt}
+
+b. Since 80\% of minning runs the non-buggy one and 20\% of the mining power runs the buggy implementation, the chain $C$ \textbf{will become the longest-chain} in long run from the mining run buggy implementation point of view.
+
+
+\vspace{12pt}
+
+
+\textbf{Problem 3.}
+
+\vspace{12pt}
+
+a. The upper bound is $4n/5 - n/5 = 3n/5$. Consider the case that $n/5$ honest nodes vote proposal 1 and $n/5$ honest nodes vote proposal 2 and $3n/5$ faulty nodes vote both proposals 1 and 2. 
+
+\vspace{12pt}
+
+b. Because $(n/5) + 1$ malicious validators can decide to not participant the protocol. Then, there are only at most $4n/5 - 1 < 4n/5$ validators will vote the same block proposal, which is not enough number of votes to confirm this proposal.
+
+
+\vspace{12pt}
+
+\textbf{Problem 4.}
+
+\vspace{12pt}
+
+a. Yes, the protocol has safety. 
+
+Case 1: No dishonest party, sender will send $b$ bit and output $b$ in step 1. The non-senders will output $b$ in step 2.
+
+Case 2: Sender is dishonest, sender only send its input $b$ to some but not all non-senders. Non-senders in step 1 will echo sender message to all non-senders, so all non-senders can get sender message and output $b$ in step 2.
+
+Case 3: Sender is dishonest, sender sends $b$ to some non-senders and sends $b'$ to the rest of non-senders. All non-senders in step 1 can catch this conflict and outputs $0$ in step 2.
+
+Case 4: One non-sender is dishonest but non-sender can not impersonate sender. So all honest non-sender can receive $b$ bit from honest sender. All honest parties will output $b$.
+
+
+\vspace{12pt}
+
+b. Yes, the protocol has validity. 
+
+\vspace{12pt}
+
+c. 
+
+Step 1: Dishonest sender sends input $1$ to \textbf{all} non-senders and sends input $0$ to one dishonest non-sender.
+
+Step 2: That dishonest non-sender will echo message with $1$ to $n-2$ non-sender and echo message $0$ to one honest non-sender $j$.
+
+Step 3: Honest non-sender $j$ will output $0$ because it received two conflict messages signed by sender, all other non-sender will output $1$.
+
+
+\vspace{12pt}
+
+d. Yes, the protocol has validity. when the sender is honest, the non-senders will either output nothing or output sender's $b$ bit because dishonest non-senders can not impersonate sender message.
+
+\vspace{12pt}
+
+e. No, the protocol does not has totality for any number of dishonest parties. A honest non-sender requires $n-1$ messages collected in step 0 and step 1 to output a bit, otherwise it outputs nothing. If there are 2 or more dis-honest parties, they can let some honest nodes output a bit while other honest nodes output nothing by not sending messages to them.
+
+\vspace{12pt}
+
+\textbf{Problem 5.}
+
+\vspace{12pt}
+
+The \textbf{tx.origin} is a global variable in Solidity that returns the address of the original external account (EOA) that started a transaction, even if it has passed through multiple contracts. 
+
+\begin{verbatim}
+// Attacker smart contract pseudo code
+contract Attacker {
+    function attack() {
+        bobWallet.pay(malloryAccount, amount);
+    } 
+}
+\end{verbatim}
+
+Mallory can transfer all the funds out of Bob’s wallet into her own account by tricking Bob to call her \textit{Attacker} contract's \textit{attack()} function. This function will call \textit{BobWallet} contract's \textit{pay()} function internally, where the argument of \textit{dest} is Mallory address. This call's \textit{tx.origin} will be \textbf{HardcodedBobAddress} so the \textit{dest.send(amount)} function will be invoked in the \textit{pay()} function. 
+
+\vspace{12pt}
+
+
+
+\end{document}
