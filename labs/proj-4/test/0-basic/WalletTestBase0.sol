@@ -39,6 +39,21 @@ abstract contract WalletTestBase0 is Test {
         assertEq(address(wallet).balance, amount);
     }
 
+    function test_can_not_transfer_too_much_ether() external {
+        // initial balance is 1 ether
+        vm.deal(address(wallet), 1 ether);
+
+        // when the owner sends some ether
+        uint256 amount = 0.1 ether;
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSignature("InsuffientBalance()"));
+        wallet.transferEth(recipient, 2 ether);
+
+        // then the transfer fails and the recipient is not credited
+        assertEq(address(wallet).balance, 1 ether);
+        assertEq(recipient.balance, 0);
+    }
+
     function test_owner_can_transfer_ether() external {
         // initial balance is 1 ether
         vm.deal(address(wallet), 1 ether);

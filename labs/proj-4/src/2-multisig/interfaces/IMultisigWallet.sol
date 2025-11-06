@@ -9,6 +9,7 @@ error NotAuthorized();
 error FailedTransfer();
 error AlreadyApproved();
 error BadConfig();
+error InsuffientBalance();
 
 interface IMultisigWallet {
     function admins(uint256 index) external view returns (address);
