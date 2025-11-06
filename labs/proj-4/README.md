@@ -156,3 +156,7 @@ function depositEth () external payable ;
 function withdrawEth ( address recipient ) external returns ( uint256 ) ;
 ```
 
+## Implementation Tips
+
+* We need to approve the Aave LendingPool contract to pull the tokens from our wallet before we can deposit them.
+    * IERC20 interface is needed
