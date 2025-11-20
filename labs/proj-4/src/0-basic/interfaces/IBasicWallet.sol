@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 error NotAuthorized();
 error FailedTransfer();
+error InsuffientBalance();
 
 interface IBasicWallet {
     function owner() external view returns (address);
